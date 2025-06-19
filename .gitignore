@@ -67,3 +67,5 @@ app/config/Database.php
 #zip
 adminaset/Modernize-1.0.0.zip
 assets/news-master.zip
+
+assets/video/*
