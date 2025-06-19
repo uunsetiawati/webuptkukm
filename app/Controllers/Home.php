@@ -29,7 +29,7 @@ class Home extends BaseController
         $this->pengaturanModel  = new Pengaturan_m();
         $this->pejabatModel  = new Pejabat_m();
         $this->pengaduanModel  = new Pengaduan_m();
-        check_not_login(); // Akan redirect jika belum login
+        //check_not_login(); // Akan redirect jika belum login
     }
 
     private function getAktifDesc($model) 
