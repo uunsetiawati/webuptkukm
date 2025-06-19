@@ -1,0 +1,69 @@
+*/config/development
+*/logs/log-*.php
+!*/logs/index.html
+*/cache/*
+!system/cache/*
+!*/cache/index.html
+!*/cache/.htaccess
+
+user_guide_src/build/*
+user_guide_src/cilexer/build/*
+user_guide_src/cilexer/dist/*
+user_guide_src/cilexer/pycilexer.egg-info/*
+
+#codeigniter 3
+application/logs/*
+!application/logs/index.html
+!application/logs/.htaccess
+/vendor/
+
+# Ignore system files
+.DS_Store
+Thumbs.db
+
+# Composer
+/vendor/
+composer.lock
+
+# Environment
+.env
+.env.*
+
+# Cache, logs, and other writable directories
+/writable/*
+!/writable/index.html
+
+# Tests output
+phpunit.xml
+phpunit.result.cache
+
+# IDE & editor config
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Node / JS tools (if used)
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Coverage / reports
+coverage/
+
+# CI4 specific (if you moved public/* to root)
+# Jangan ignore public jika kamu pindahkan isinya ke root
+# Tapi pastikan jangan ikut commit file sementara seperti:
+index.php.old
+.htaccess_old
+
+# Jika kamu menaruh file dari public ke root:
+# Jangan abaikan favicon, index.php, dll jika sudah kamu ubah
+# Jadi kamu **tidak perlu ignore apa-apa dari "public"** karena folder itu memang tidak ada
+
+#Database
+app/config/Database.php
+
+#zip
+adminaset/Modernize-1.0.0.zip
+assets/news-master.zip
