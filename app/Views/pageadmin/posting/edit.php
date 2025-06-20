@@ -30,7 +30,7 @@
                     <div class="mb-3">
                       <label class="form-label">Isi</label>
                       <!-- <input type="text" name="isi" class="form-control"> -->
-                       <textarea name="isi" id="editor" class="form-control" required><?=$posting['isi']?></textarea>
+                       <textarea name="isi" id="editor" class="form-control"><?=$posting['isi']?></textarea>
                     </div>
                     <div class="mb-3">
                       <label class="form-label" required>Status</label>
