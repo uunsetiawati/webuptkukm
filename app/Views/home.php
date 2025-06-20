@@ -269,7 +269,7 @@
                                 <img src="<?=base_url('uploads/thumbnails/'.$literasi['thumbnail'])?>" alt="" style="width: 150px; object-fit: cover;">
                             </div>
                             <div class="most-recent-capt">
-                                <h4><a href="latest_news.html"><?=$literasi['judul']?></a></h4>
+                                <h4><a href="<?=base_url('home/details/'.$literasi['slug'])?>"><?=$literasi['judul']?></a></h4>
                                 <p><?=tanggal_indo($literasi['created_at'])?></p>
                             </div>
                         </div>   
