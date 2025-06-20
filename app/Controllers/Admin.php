@@ -63,7 +63,7 @@ class Admin extends BaseController
 
         $data = [
             'title' => 'Beranda',
-            'nama' => 'Pengunjung',
+            'nama' => session()->get('nama'),
         ];
         return $this->renderPageAdmin('pageadmin/beranda', $data);
         
