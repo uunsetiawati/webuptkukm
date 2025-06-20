@@ -177,7 +177,7 @@
                                                                 endif;?>
                                                             <div class="whats-right-cap">
                                                                 <span class="colorb"><?=$row['jenis']?></span>
-                                                                <h4><a href=""><?=$row['judul']?></a></h4>
+                                                                <h4><a href="<?=base_url('home/details/'.$row['slug'])?>"><?=$row['judul']?></a></h4>
                                                                 <p><?=tanggal_indo($row['created_at'])?></p> 
                                                             </div>
                                                         </div>
@@ -233,14 +233,13 @@
                                                         <div class="whats-right-single mb-20">
                                                             <?php if(!empty($row['thumbnail']) && !empty(FCPATH.'uploads/thumbnails/' . $row['thumbnail'])):?>
                                                             <div class="whats-right-img">
-                                                                <img src="ats-right-img">
                                                                 <img src="<?=base_url('uploads/thumbnails/'.$row['thumbnail'])?>" alt="">
                                                             </div>
                                                                 <?php else: echo "Tidak Ada Gambar";
                                                                 endif;?>
                                                             <div class="whats-right-cap">
                                                                 <span class="colorb"><?=$row['jenis']?></span>
-                                                                <h4><a href="latest_news.html"><?=$row['judul']?></a></h4>
+                                                                <h4><a href="<?=base_url('home/details/'.$row['slug'])?>"><?=$row['judul']?></a></h4>
                                                                 <p><?=tanggal_indo($row['created_at'])?></p> 
                                                             </div>
                                                         </div>
