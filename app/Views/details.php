@@ -42,3 +42,27 @@
       </div>
    </section>
    <!--================ Blog Area end =================-->
+
+   <script>
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('oembed[url]').forEach(function (element) {
+        const url = element.getAttribute('url');
+        if (url.includes('youtube.com') || url.includes('youtu.be')) {
+            // Ambil ID video dari URL
+            let videoId;
+            const youtubeRegex = /(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]+)/;
+            const match = url.match(youtubeRegex);
+            if (match && match[1]) {
+                videoId = match[1];
+                const iframe = document.createElement('iframe');
+                iframe.setAttribute('width', '100%');
+                iframe.setAttribute('height', '400');
+                iframe.setAttribute('frameborder', '0');
+                iframe.setAttribute('allowfullscreen', '');
+                iframe.setAttribute('src', `https://www.youtube.com/embed/${videoId}`);
+                element.replaceWith(iframe);
+            }
+        }
+    });
+});
+</script>
