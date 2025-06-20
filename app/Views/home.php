@@ -215,10 +215,10 @@
                                                         }
                                                     ?>
                                                     <div class="whates-caption">
-                                                        <h4><a href="#"><?=$postingukm['judul']?></a></h4>
+                                                        <h4><a href="<?= base_url('home/details/' . $postingukm['slug']) ?>"><?=$postingukm['judul']?></a></h4>
                                                         <span><?= $postingukm['penulis']?>   -   <?=tanggal_indo($postingukm['created_at'])?></span>
                                                         <p><?=$shortukm?></p>
-                                                        <a href="<?= base_url('berita/detail/' . $posting['slug']) ?>" style="color: #a8bc3c; display: inline-block;">Baca Selengkapnya</a>
+                                                        <a href="<?= base_url('home/details/' . $postingukm['slug']) ?>" style="color: #a8bc3c; display: inline-block;">Baca Selengkapnya</a>
                                                     </div>
                                                     <?php  }else{ echo "";}?>
                                                 </div>
