@@ -192,7 +192,7 @@
                                     <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
                                         <div class="row">
                                             <!-- Left Details Caption -->
-                                            <div class="col-xl-7">
+                                            <div class="col-xl-6 col-lg-12">
                                                 <div class="whats-news-single mb-40">
                                                     <?php if(!empty($postingukm)):?>
                                                     <div class="whates-img">
@@ -224,7 +224,7 @@
                                                 </div>
                                             </div>
                                             <!-- Right single caption -->
-                                            <div class="col-xl-5 col-lg-12">
+                                            <div class="col-xl-6 col-lg-12">
                                                 <div class="row">
                                                     <!-- single -->
                                                     <?php if(!empty($ukm)):?>
@@ -299,7 +299,7 @@
                                     <?php endif;?>
                                     <div class="most-recent-cap">
                                         <span class="bgbeg">Selengkapnya</span>
-                                        <h4><a href="latest_news.html"><?=$postingpena['judul']?></a></h4>
+                                        <h4><a href="<?=base_url('home/details/'.$postingpena['slug'])?>"><?=$postingpena['judul']?></a></h4>
                                         <p><?=$postingpena['penulis']?>  |  <?=tanggal_indo($postingpena['created_at'])?></p>
                                     </div>
                                 </div>
@@ -323,7 +323,7 @@
                                         <?php endif;?> 
                                     </div>
                                     <div class="most-recent-capt">
-                                        <h4><a href="latest_news.html"><?=$p['judul']?></a></h4>
+                                        <h4><a href="<?=base_url('home/details/'.$p['slug'])?>"><?=$p['judul']?></a></h4>
                                         <p><?=$p['penulis']?>  |  <?=tanggal_indo($p['created_at'])?></p>
                                     </div>
                                 </div>
