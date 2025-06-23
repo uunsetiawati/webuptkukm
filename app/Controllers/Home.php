@@ -298,6 +298,13 @@ class Home extends BaseController
             'postdetail' => $detailPost,
             'postberita' => $beritaPost
         ];
+        elseif($detailPost['kategori'] == 'Pena Pedia'):
+        $beritaPost = $this->getOtherPostsKategori('Pena Pedia', $detailPost['id'] ?? null, 4);        
+        $data = [
+            'title' => 'Pena Pedia Lainnya',
+            'postdetail' => $detailPost,
+            'postberita' => $beritaPost
+        ];
         endif;        
 
         return $this->renderPage('details', $data);
