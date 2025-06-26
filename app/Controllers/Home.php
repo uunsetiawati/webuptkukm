@@ -169,7 +169,7 @@ class Home extends BaseController
                 'status' => 'publish',
                 'kategori' => 'berita'
             ])
-            ->orderBy('id', 'DESC')
+            ->orderBy('created_at', 'DESC')
             ->findAll($limit);
     }
 
