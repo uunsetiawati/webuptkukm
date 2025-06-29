@@ -14,9 +14,9 @@
                         <li><a href="#"><i class="fa fa-user"></i> <?=$postdetail['penulis']?></a></li>
                         <li><a href="#"><i class="fa fa-calendar"></i> <?=tanggal_indo($postdetail['created_at'])?></a></li>
                      </ul>
-                     <p class="excert">
+                     <div class="post-content">
                         <?=$postdetail['isi']?>
-                     </p>
+                     </div>
                   </div>
                </div>
             </div>

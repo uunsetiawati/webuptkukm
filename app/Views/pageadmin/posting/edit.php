@@ -117,10 +117,59 @@
       </script>
 
       <!-- Inisialisasi CKEditor -->
-      <script>
+      <!-- <script>
           ClassicEditor
               .create(document.querySelector('#editor'))
               .catch(error => {
                   console.error(error);
               });
+      </script> -->
+
+      <script>
+        ClassicEditor
+            .create(document.querySelector('#editor'), {
+                extraPlugins: [ MyCustomUploadAdapterPlugin ]
+            })
+            .catch(error => {
+                console.error(error);
+            });
+
+        function MyCustomUploadAdapterPlugin(editor) {
+            editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
+                return new MyUploadAdapter(loader);
+            };
+        }
+
+        class MyUploadAdapter {
+            constructor(loader) {
+                this.loader = loader;
+            }
+
+            upload() {
+                return this.loader.file.then(file => new Promise((resolve, reject) => {
+                    const data = new FormData();
+                    data.append('upload', file);
+
+                    fetch("<?= base_url('admin/posting/uploadImage') ?>", {
+                        method: "POST",
+                        body: data
+                    })
+                    .then(response => response.json())
+                    .then(result => {
+                        if (result.url) {
+                            resolve({ default: result.url });
+                        } else {
+                            reject(result.error?.message || 'Upload failed');
+                        }
+                    })
+                    .catch(error => {
+                        reject('Upload failed: ' + error.message);
+                    });
+                }));
+            }
+
+            abort() {
+                // optional
+            }
+        }
       </script>

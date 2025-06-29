@@ -35,6 +35,8 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin', 'filter' => 'ro
     $routes->post('posting/update/(:num)', 'Posting::update/$1');
     $routes->post('posting/delete/(:num)', 'Posting::delete/$1');
     $routes->post('posting/deleteThumbnail/(:num)', 'Posting::deleteThumbnail/$1');
+    $routes->post('posting/uploadImage', 'Posting::uploadImage');
+
 
 });
 

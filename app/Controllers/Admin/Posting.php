@@ -4,6 +4,7 @@ namespace App\Controllers\Admin;
 
 use App\Controllers\BaseController;
 use App\Models\Posting_m;
+use DOMDocument;
 
 class Posting extends BaseController
 {
@@ -108,6 +109,29 @@ class Posting extends BaseController
         return redirect()->to('/admin/posting/data');
     }
 
+    public function uploadImage()
+    {
+        $file = $this->request->getFile('upload');
+
+        if ($file && $file->isValid() && !$file->hasMoved()) {
+            $newName = $file->getRandomName();
+            $file->move(FCPATH . 'uploads/posting', $newName);
+
+            return $this->response->setJSON([
+                'url' => base_url('uploads/posting/' . $newName)
+            ]);
+        }
+
+        // Jika gagal, kasih respon sesuai format CKEditor (error.message)
+        return $this->response->setStatusCode(400)->setJSON([
+            'error' => [
+                'message' => 'Upload failed'
+            ]
+        ]);
+    }
+
+
+
     public function edit($id)
     {
         // $data['posting'] = $this->postingModel->find($id);
@@ -128,8 +152,60 @@ class Posting extends BaseController
         
     }
 
+    // public function update($id)
+    // {
+    //     $thumbnailFile = $this->request->getFile('thumbnail');
+    //     $thumbnailLama = $this->request->getPost('thumbnail_lama');
+
+    //     if ($thumbnailFile && $thumbnailFile->isValid() && !$thumbnailFile->hasMoved()) {
+    //         $namaThumbnail = $thumbnailFile->getRandomName();
+    //         $thumbnailFile->move('uploads/thumbnails', $namaThumbnail);
+
+    //         // Hapus thumbnail lama jika ada
+    //         if ($thumbnailLama && file_exists('uploads/thumbnails/' . $thumbnailLama)) {
+    //             unlink('uploads/thumbnails/' . $thumbnailLama);
+    //         }
+    //     } else {
+    //         // Jika tidak upload thumbnail baru, pakai yang lama
+    //         $namaThumbnail = $thumbnailLama;
+    //     }
+
+    //     // Hapus gambar dari isi
+    //     $this->deleteImagesFromIsi($post['isi']);
+
+    //     // Cek apakah slug sudah ada
+    //     $judul = $this->request->getPost('judul');
+    //     $slug = url_title($judul, '-', true);
+    //     $slugAsli = $slug;
+    //     $counter = 1;
+
+    //     while ($this->postingModel->where('slug', $slug)->first()) {
+    //         $slug = $slugAsli . '-' . $counter++;
+    //     }
+
+    //     $this->postingModel->update($id, [
+    //         'judul' => $this->request->getPost('judul'),
+    //         'slug'      => $slug,
+    //         'isi' => $this->request->getPost('isi'),
+    //         'kategori' => $this->request->getPost('kategori'),
+    //         'jenis' => $this->request->getPost('jenis'),
+    //         'penulis'   => session()->get('nama'),
+    //         'status' => $this->request->getPost('status'),
+    //         'thumbnail' => $namaThumbnail,
+    //     ]);
+
+    //     return redirect()->to('/admin/posting/data');
+    // }
+
     public function update($id)
     {
+        // Ambil data lama dulu
+        $post = $this->postingModel->find($id);
+
+        if (!$post) {
+            return redirect()->back()->with('error', 'Data tidak ditemukan.');
+        }
+
         $thumbnailFile = $this->request->getFile('thumbnail');
         $thumbnailLama = $this->request->getPost('thumbnail_lama');
 
@@ -146,29 +222,33 @@ class Posting extends BaseController
             $namaThumbnail = $thumbnailLama;
         }
 
-        // Cek apakah slug sudah ada
+        // Hapus gambar dari isi lama
+        $this->deleteImagesFromIsi($post['isi']); // pastikan fungsi ini tersedia
+
+        // Cek apakah slug sudah ada dan bukan slug dirinya sendiri
         $judul = $this->request->getPost('judul');
         $slug = url_title($judul, '-', true);
         $slugAsli = $slug;
         $counter = 1;
 
-        while ($this->postingModel->where('slug', $slug)->first()) {
+        while ($this->postingModel->where('slug', $slug)->where('id !=', $id)->first()) {
             $slug = $slugAsli . '-' . $counter++;
         }
 
         $this->postingModel->update($id, [
-            'judul' => $this->request->getPost('judul'),
+            'judul'     => $judul,
             'slug'      => $slug,
-            'isi' => $this->request->getPost('isi'),
-            'kategori' => $this->request->getPost('kategori'),
-            'jenis' => $this->request->getPost('jenis'),
+            'isi'       => $this->request->getPost('isi'),
+            'kategori'  => $this->request->getPost('kategori'),
+            'jenis'     => $this->request->getPost('jenis'),
             'penulis'   => session()->get('nama'),
-            'status' => $this->request->getPost('status'),
+            'status'    => $this->request->getPost('status'),
             'thumbnail' => $namaThumbnail,
         ]);
 
-        return redirect()->to('/admin/posting/data');
+        return redirect()->to('/admin/posting/data')->with('success', 'Posting berhasil diperbarui.');
     }
+
 
     public function delete($id)
     {
@@ -198,5 +278,32 @@ class Posting extends BaseController
 
         return $this->response->setStatusCode(400)->setJSON(['status' => 'error']);
     }
+
+    function deleteImagesFromIsi($isi)
+    {
+        $deleted = [];
+
+        $dom = new DOMDocument();
+        @$dom->loadHTML($isi); // suppress warning HTML malform
+
+        $images = $dom->getElementsByTagName('img');
+
+        foreach ($images as $img) {
+            $src = $img->getAttribute('src');
+
+            // Ambil path relatif dari domain (contoh: uploads/posting/nama.jpg)
+            $baseUrl = base_url(); // atau sesuaikan jika ada subfolder
+            $relativePath = str_replace($baseUrl, '', $src); // buang domain
+            $fullPath = FCPATH . $relativePath;
+
+            if (file_exists($fullPath)) {
+                unlink($fullPath); // hapus file fisik
+                $deleted[] = $fullPath;
+            }
+        }
+
+        return $deleted;
+    }
+
 
 }

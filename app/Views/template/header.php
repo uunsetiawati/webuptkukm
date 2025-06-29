@@ -22,7 +22,26 @@
     <link rel="stylesheet" href="<?=base_url('/assets/css/slick.css')?>">
     <link rel="stylesheet" href="<?=base_url('/assets/css/nice-select.css')?>">
     <link rel="stylesheet" href="<?=base_url('/assets/css/style.css')?>">
+
+    <style>
+    .post-content img {
+        max-width: 600px !important;
+        height: auto !important;
+        width: 100% !important;
+        display: block;
+        margin: 10px auto;
+    }
+
+    .post-content figure.image {
+        max-width: 600px !important;
+        margin: 10px auto !important;
+        text-align: center;
+    }
+</style>
+
 </head>
+
+
 
 <body>
 <!-- Preloader Start -->
