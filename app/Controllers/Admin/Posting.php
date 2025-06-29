@@ -279,31 +279,63 @@ class Posting extends BaseController
         return $this->response->setStatusCode(400)->setJSON(['status' => 'error']);
     }
 
-    function deleteImagesFromIsi($isi)
-    {
-        $deleted = [];
+    // function deleteImagesFromIsi($isi)
+    // {
+    //     $deleted = [];
 
-        $dom = new DOMDocument();
-        @$dom->loadHTML($isi); // suppress warning HTML malform
+    //     $dom = new DOMDocument();
+    //     @$dom->loadHTML($isi); // suppress warning HTML malform
 
-        $images = $dom->getElementsByTagName('img');
+    //     $images = $dom->getElementsByTagName('img');
 
-        foreach ($images as $img) {
-            $src = $img->getAttribute('src');
+    //     foreach ($images as $img) {
+    //         $src = $img->getAttribute('src');
 
-            // Ambil path relatif dari domain (contoh: uploads/posting/nama.jpg)
-            $baseUrl = base_url(); // atau sesuaikan jika ada subfolder
-            $relativePath = str_replace($baseUrl, '', $src); // buang domain
+    //         // Ambil path relatif dari domain (contoh: uploads/posting/nama.jpg)
+    //         $baseUrl = base_url(''); // atau sesuaikan jika ada subfolder
+    //         $relativePath = str_replace($baseUrl, '', $src); // buang domain
+    //         $fullPath = FCPATH . $relativePath;
+
+    //         if (file_exists($fullPath)) {
+    //             unlink($fullPath); // hapus file fisik
+    //             $deleted[] = $fullPath;
+    //         }
+    //     }
+
+    //     return $deleted;
+    // }
+
+    protected function deleteImagesFromIsi($isi)
+{
+    $dom = new \DOMDocument();
+    @$dom->loadHTML($isi);
+    $images = $dom->getElementsByTagName('img');
+
+    foreach ($images as $img) {
+        $src = $img->getAttribute('src');
+
+        if (strpos($src, 'uploads/posting') !== false) {
+            $parsedPath = parse_url($src, PHP_URL_PATH); // misal: /webuptkukm/uploads/posting/xxx.jpg
+            $relativePath = ltrim($parsedPath, '/');
+
+            // Hilangkan 'webuptkukm/' jika FCPATH sudah mengandung itu
+            $relativePath = preg_replace('#^webuptkukm/#', '', $relativePath);
+
             $fullPath = FCPATH . $relativePath;
 
-            if (file_exists($fullPath)) {
-                unlink($fullPath); // hapus file fisik
-                $deleted[] = $fullPath;
+            log_message('debug', 'Try delete image: ' . $fullPath);
+
+            if (file_exists($fullPath) && is_file($fullPath)) {
+                unlink($fullPath);
+                log_message('debug', 'Deleted: ' . $fullPath);
+            } else {
+                log_message('debug', 'NOT FOUND or not file: ' . $fullPath);
             }
         }
-
-        return $deleted;
     }
+}
+
+
 
 
 }
